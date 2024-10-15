@@ -60,7 +60,25 @@ export function createCategory(req, res) {
       }
 
       // Extract the category ID from request parameters
-      const categoryId = req.params.id;
+      const name = req.params.name;
+
+      Category.findOneAndDelete({name : name}).then(
+        () => {
+          res.json({
+            message : "categor deleted successfully !"
+          })
+
+        }
+
+     ).catch(
+      ()=>{
+        res.json(
+          {
+            message : "Category delection failed "
+          }
+        )
+      }
+     )
 
 
 
