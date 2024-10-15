@@ -7,7 +7,7 @@ const categorySchema  = mongoose.Schema(
             required : true
         },
         price:{
-            type : double ,
+            type : Number,
             required : true
         },
         features :[
