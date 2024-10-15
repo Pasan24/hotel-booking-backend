@@ -39,7 +39,29 @@ export function createCategory(req, res) {
       });
 
       // Log the user details for debugging
-      console.log(req.user);
+      //console.log(req.user)
+      
+    }
+
+    // Function to delete a category by ID
+    export function deleteCategory(req, res) {
+      // Check if the user is authenticated
+      if (!req.user) {
+        return res.status(401).json({
+          message: "Unauthorized"
+        });
+      }
+
+      // Check if the user has admin privileges
+      if (req.user.type !== "admin") {
+        return res.status(403).json({
+          message: "Forbidden"
+        });
+      }
+
+      // Extract the category ID from request parameters
+      const categoryId = req.params.id;
+
 
 
 }
