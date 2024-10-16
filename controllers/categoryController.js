@@ -128,6 +128,45 @@ export function createCategory(req, res) {
 
     }
 
+
+    export function updateCategory(req, res) {
+      const adminValid = isAdminValid(req);
+    
+      if (!adminValid) {
+        return res.status(403).json({
+          message: "Unauthorized"
+        });
+      }
+    
+      const name = req.params.name;
+    
+      Category.updateOne({ name: name }, req.body)
+        .then(() => {
+          res.json({
+            message: "Category updated successfully"
+          });
+        })
+        .catch(() => {
+          res.status(500).json({
+            message: "Failed to update category"
+          });
+        });
+    }
+    
+
+
+  function isAdminValid(req) {
+    if (req.user == null) {
+      return false;
+    }
+    
+    if (req.user.type !== "admin") {
+      return false;
+    }
+
+    return true;
+  }
+
 /*import Category from "../models/category.js";
 
 export function createCategory(req,res){
