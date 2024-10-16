@@ -69,7 +69,7 @@ export function loginUser(req, res) {
         type: user.type,
       };
 
-      const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: "1h" });
+      const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: "10h" });
 
       // Send back the user data and token
       res.json({

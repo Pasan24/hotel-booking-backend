@@ -80,10 +80,53 @@ export function createCategory(req, res) {
       }
      )
 
+    }
 
 
-}
+    export function getCategory(req, res) {
+      Category.find()
+        .then(result => {
+          if (result.length === 0) {
+            return res.status(404).json({ message: 'No categories found' });
+          }
+          res.json({ categories: result });
+        })
+        .catch(err => {
+          console.error('Error fetching categories:', err); // Log the error
+          res.status(500).json({
+            message: 'Failed to get categories',
+            error: err.message  // Send error details in response
+          });
+        });
+    }
+    
 
+    export function getCategoryByName(req,res){
+      const name = req.params.name ;
+
+      Category.find({name :name}).then(
+        (result)=>{
+            if(result == null){
+              res.json({
+                message :"category not found"
+              })
+            }else{
+              res.json({
+                category : result
+              })
+            }
+        }
+      ).catch(
+        ()=>{
+          res.json(
+            {
+              message : " Failed to get category"
+            }
+          )
+        }
+      )
+
+    }
 
 /*import Category from "../models/category.js";
 
