@@ -45,7 +45,7 @@ const userSchema = mongoose.Schema(
   }
 )
 
-const User = mongoose.model("users" , userSchema)
+const User = mongoose.model("users" , userSchema) //create model and map to mongodb collection
 
-export default User;
+export default User; // by exporting we can use this model from another parts in this code
 

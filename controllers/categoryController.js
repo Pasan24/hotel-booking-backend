@@ -1,4 +1,5 @@
 import Category from "../models/category.js";
+import { isAdminValid } from "./userControllers.js";
 
 // Function to create a new category
 export function createCategory(req, res) {
@@ -84,8 +85,7 @@ export function createCategory(req, res) {
 
 
     export function getCategory(req, res) {
-      Category.find()
-        .then(result => {
+      Category.find().then(result => {
           if (result.length === 0) {
             return res.status(404).json({ message: 'No categories found' });
           }
@@ -155,18 +155,7 @@ export function createCategory(req, res) {
     
 
 
-  function isAdminValid(req) {
-    if (req.user == null) {
-      return false;
-    }
-    
-    if (req.user.type !== "admin") {
-      return false;
-    }
-
-    return true;
-  }
-
+  
 /*import Category from "../models/category.js";
 
 export function createCategory(req,res){
