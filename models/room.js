@@ -40,8 +40,11 @@ const roomSchema = new mongoose.Schema(
         notes : {
             type : String,
             default : " "
+        },
+        timeStamps: {
+            type : Date,
+            deafult : Date.now
         }
-
     }
 
 )

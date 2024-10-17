@@ -4,13 +4,15 @@ const bookingSchema = mongoose.Schema(
     
     {
         bookingId :{
+            type : Number,
             required : true,
             unique : true
         },
         roomId :{
 
             type :  Number,
-            required : true
+            required : true,
+            unique : true
         },
 
         email:{
@@ -47,6 +49,10 @@ const bookingSchema = mongoose.Schema(
 
 
 )
+
+const Booking =  mongoose.model("Bookings",bookingSchema)
+
+export default Booking
 
 
 
