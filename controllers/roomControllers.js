@@ -1,5 +1,5 @@
-import Room from "../models/room";
-import { isAdminValid } from "./userControllers";
+import Room from "../models/room.js";
+import { isAdminValid } from "./userControllers.js";
 
 export function createRoom (req,res){
     if(!isAdminValid(req)){
@@ -10,7 +10,9 @@ export function createRoom (req,res){
     }
 
 
-    const newRoom = newRoom (req.body).save().then(
+    const newRoom = new  Room (req.body);
+
+    newRoom.save().then(
         (result)=>{
             res.json(
                 {
@@ -72,7 +74,7 @@ export function findRoomById(req,res){
     Room.findOne({roomId :roomId}).then(
         (result)=>{
             if(result == null){
-                res.satus(404).json({
+                res.status(404).json({
                     message: "Room not Found"
                 
                 })
@@ -80,8 +82,8 @@ export function findRoomById(req,res){
             }else{
                 res.json(
                     {
-                        message : "Room not found",
-                        error : err
+                        message : "Room found successfully",
+                        result : result
                     }
                 )
             }
@@ -124,31 +126,61 @@ export function getRooms(req,res){
 
 }
 
-export function updateRoom(req,res){
-    if(!isAdminValid(req)){
+export function updateRoom(req, res) {
+    if (!isAdminValid(req)) {
         res.status(403).json({
-            message :"forbidden"
-        })
-        return
+            message: "forbidden"
+        });
+        return;
     }
 
-    const roomId = req.params.roomId
+    const roomId = req.params.roomId;
 
-    Room.findByIdAndUpdate({ roomId : roomId},req.body).then(
-        ()=>{
+    // Use findOneAndUpdate instead of findByIdAndUpdate
+    Room.findOneAndUpdate(
+        { roomId: roomId },  // Use the roomId to find the document
+        req.body,            // The new data to update the room
+        { new: true }        // Option to return the updated document
+    ).then((updatedRoom) => {
+        if (!updatedRoom) {
+            res.status(404).json({
+                message: "Room not found"
+            });
+        } else {
             res.json({
-                message :"Room updated successfully"
-            })
+                message: "Room updated successfully",
+                updatedRoom: updatedRoom
+            });
         }
-    ).catch(
-        ()=>{
-            res.jsn({
-                message : "Room update failed"
-            })
+    }).catch((err) => {
+        res.json({
+            message: "Room update failed",
+            error: err
+        });
+    });
+}
 
+
+export function getRoomsByCategory(req, res) {
+    const category = req.params.category;
+
+    // Use Room to find rooms by category
+    Room.find({ category: category }).then((results) => {
+        // Check if any results were found
+        if (results.length === 0) {
+            res.status(404).json({
+                message: "No rooms found in this category"
+            });
+        } else {
+            res.json({
+                message: "Rooms found in category: " + category,
+                rooms: results
+            });
         }
-
-    )
-
-
+    }).catch((err) => {
+        res.status(500).json({
+            message: "Failed to get rooms by category",
+            error: err
+        });
+    });
 }
