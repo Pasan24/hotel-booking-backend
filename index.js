@@ -9,15 +9,16 @@ import dotenv from 'dotenv'
 import categoryRouter from './Roots/categoryRoute.js'
 import roomRouter from './Roots/roomRoute.js'
 import bookingRouter from './Roots/bookingRoute.js'
+import cors from 'cors'
+
 
 
 dotenv.config()
 
 
-
-
-
 const app = express()
+
+app.use(cors())
 
 
 app.use(bodyParser.json())
